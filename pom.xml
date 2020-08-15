@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <com.alibaba.druid.version>1.1.10</com.alibaba.druid.version>
         <com.alibaba.fastjson.version>1.2.42</com.alibaba.fastjson.version>
         <com.google.guava.version>24.0-jre</com.google.guava.version>
         <org.apache.shardingsphere.version>4.0.0-RC2</org.apache.shardingsphere.version>
