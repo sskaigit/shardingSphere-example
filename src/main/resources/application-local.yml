@@ -1,0 +1,51 @@
+server:
+  port: 9010
+
+spring:
+  servlet:
+    multipart:
+      location: /Users/shaoshikai/Downloads
+  # ========  主数据源配置  ========
+  datasource:
+    primary:
+      url: jdbc:mysql://localhost:3306/dmall_test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: system
+      driverClassName: com.mysql.jdbc.Driver
+  # ========  shardingsphere数据源配置  ========
+  shardingsphere:
+    datasource:
+      names: ds0
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/dmall_test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+        username: root
+        password: system
+    ## 分表策略 其中log_data为逻辑表 分表主要取决与create_date字段
+    sharding:
+      tables:
+        # log_data的策略
+        log_data:
+          # 配置下面dynamic.table后，此处将不起作用。
+          actual-data-nodes: ds0.log_data$->{[202007,202008]}
+          table-strategy:
+            standard:
+              sharding-column: create_date
+              # 自定义分表算法
+              precise-algorithm-class-name: com.example.demo.config.PreciseSharingTableAlgorithmOfAlarmhis
+              range-algorithm-class-name: com.example.demo.config.RangeShardingAlgorithmOfAlarmhis
+      # 开启后可以看到真实路由SQL，但是日志太多了，正式环境不保留
+    props:
+      sql:
+        show: true
+        # 是否在日志中打印简单风格的 SQL。
+        # simple: true
+
+
+# 配置水平分表随着日期每月递增的逻辑表名，配置后不走分片建，全局查询时能够自动获取最新的逻辑表分片，多个通过逗号分隔
+dynamic:
+  table:
+    names: log_data
+    startDate: 2020-07
+

@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    include: druid,quartz,redis
+    active: local
+    # active: dev
+    # active: test
+    # active: prod
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  jpa:
+    show-sql: true
+    hibernate:
+      dll-auto: update
+      format_sql: true
+      naming_strategy: org.hibernate.cfg.DefaultNamingStrategy
+    properties:
+      hibernate:
+        # 使用 MYISAM 
+        # dialect: org.hibernate.dialect.MySQL5Dialect
+        # 使用 InnoDB
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        hbm2ddl:
+          auto: update
